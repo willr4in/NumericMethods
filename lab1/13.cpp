@@ -7,29 +7,31 @@
 #define EPS 1e-9  // Порог для сходимости и вывода значений
 #define MAX_ITER 10000  // Максимальное количество итераций
 
-// Функция для вычисления нормы ||X||, где X - матрица или вектор
-double calc_norm(const std::vector<std::vector<double>>& X) {
-    int n = X.size();
-    double l2_norm = std::abs(X[0][0]);
-
+// Функция для вычисления нормы ||X||, где X - матрица 
+double calc_infinity_norm(const std::vector<std::vector<double>>& A) {
+    int n = A.size();
+    double max_row_sum = 0.0;
+    
     for (int i = 0; i < n; ++i) {
+        double row_sum = 0.0;
         for (int j = 0; j < n; ++j) {
-            l2_norm = std::max(std::abs(X[i][j]), l2_norm);
+            row_sum += std::abs(A[i][j]);
         }
+        max_row_sum = std::max(max_row_sum, row_sum);
     }
-
-    return l2_norm;
+    
+    return max_row_sum;
 }
 
 double calc_norm(const std::vector<double>& X) {
     int n = X.size();
-    double l2_norm = std::abs(X[0]);
+    double lc_norm = std::abs(X[0]);
 
     for (int i = 0; i < n; ++i) {
-        l2_norm = std::max(std::abs(X[i]), l2_norm);
+        lc_norm = std::max(std::abs(X[i]), lc_norm);
     }
 
-    return l2_norm;
+    return lc_norm;
 }
 
 // Функция для вычитания двух векторов
@@ -134,9 +136,7 @@ std::pair<std::vector<double>, int> solve_seidel(const std::vector<std::vector<d
         for (int i = 0; i < n; ++i) {
             cur_x[i] = beta[i];
             for (int j = 0; j < n; ++j) {
-                if (i != j) {
-                    cur_x[i] += alpha[i][j] * cur_x[j];
-                }
+                cur_x[i] += alpha[i][j] * cur_x[j];
             }
         }
         

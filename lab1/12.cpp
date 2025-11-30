@@ -29,8 +29,8 @@ std::vector<double> tridiagonal_solve(const std::vector<double>& a, const std::v
         return {};  // Возвращаем пустой вектор в случае ошибки
     }
 
-    v[0] = -c[0] / b[0];
-    u[0] = d[0] / b[0];
+    v[0] = -c[0] / b[0]; // p = v
+    u[0] = d[0] / b[0]; // q = u
 
     for (int i = 1; i < n; i++) {
         double denominator = b[i] + a[i - 1] * v[i - 1]; // a[i-1] для нижней диагонали
